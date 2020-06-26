@@ -1,0 +1,49 @@
+#!/usr/bin/env python
+
+import requests
+import json
+import yaml
+import re
+
+with open("config.yaml", "r") as ymlfile:
+    harness_config = yaml.load(ymlfile, Loader=yaml.FullLoader)
+
+config = harness_config["harness"]
+
+url = "https://api.opsani.com/accounts/{}/applications/{}/config/".format(
+    config["opsani_account"], config["opsani_app_name"]
+)
+
+with open("/etc/opsani-auth/token", "r") as auth_file:
+    opsani_token = auth_file.read().strip()
+headers = {
+    "Content-type": "application/merge-patch+json",
+    "Authorization": "Bearer {}".format(opsani_token),
+}
+response = requests.get(url, headers=headers)
+opsani_config = response.json()
+canary = opsani_config.get('adjustment', {}).get('control', {}).get('userdata', {}).get('canary')
+canary_ip = canary.get('ip')
+canary_ip = re.sub(r"\.", "-", canary_ip)
+canary_hostname = f"ip-{canary_ip}.ec2.internal"
+
+if not response.ok:
+    raise('Unable to query OCO config. Status code {}. Data {}'.format(response.status_code, response.text))
+
+newrelic_app_id = config['newrelic_app_id']
+url = f"https://api.newrelic.com/v2/applications/{newrelic_app_id}/instances.json"
+
+headers = {
+    "X-Api-Key": config['newrelic_api_key']
+}
+
+result = requests.post(url,headers=headers).json()
+
+monitoring = {'instance_ids': [], 'ref_instance_ids': []}
+for item in result['application_instances']:
+    if item['host'] in canary_hostname:
+        monitoring['instance_ids'].append(item['host'])
+    else:
+        monitoring['ref_instance_ids'].append(item['host'])
+ 
+print(json.dumps(monitoring))

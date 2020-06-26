@@ -21,7 +21,6 @@ headers = {
     "Content-type": "application/merge-patch+json",
     "Authorization": "Bearer {}".format(opsani_token),
 }
-print("HKJHKHKHKHJKHJKHKJHKHKHKJHKJHKJHJKKJHK",file=sys.stderr)
 response = requests.get(url, headers=headers)
 opsani_config = response.json()
 canary = opsani_config.get('adjustment', {}).get('control', {}).get('userdata', {}).get('canary')
@@ -39,8 +38,6 @@ with open("/run/secrets/optune_newrelic_apm_api_key", "r") as auth_file:
     newrelic_api_key = auth_file.read().strip()
 
 url = f"https://api.newrelic.com/v2/applications/{newrelic_app_id}/instances.json"
-print(newrelic_app_id,file=sys.stderr)
-print(config['newrelic_api_key'],file=sys.stderr)
 headers = {
     "X-Api-Key": newrelic_api_key
 }

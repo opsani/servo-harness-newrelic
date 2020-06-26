@@ -4,6 +4,7 @@ import requests
 import json
 import yaml
 import re
+import sys
 
 with open("config.yaml", "r") as ymlfile:
     harness_config = yaml.load(ymlfile, Loader=yaml.FullLoader)
@@ -20,6 +21,7 @@ headers = {
     "Content-type": "application/merge-patch+json",
     "Authorization": "Bearer {}".format(opsani_token),
 }
+print("HKJHKHKHKHJKHJKHKJHKHKHKJHKJHKJHJKKJHK",file=sys.stderr)
 response = requests.get(url, headers=headers)
 opsani_config = response.json()
 canary = opsani_config.get('adjustment', {}).get('control', {}).get('userdata', {}).get('canary')
@@ -30,11 +32,17 @@ canary_hostname = f"ip-{canary_ip}.ec2.internal"
 if not response.ok:
     raise('Unable to query OCO config. Status code {}. Data {}'.format(response.status_code, response.text))
 
-newrelic_app_id = config['newrelic_app_id']
-url = f"https://api.newrelic.com/v2/applications/{newrelic_app_id}/instances.json"
+with open("/run/secrets/optune_newrelic_apm_app_id", "r") as auth_file:
+    newrelic_app_id = auth_file.read().strip()
 
+with open("/run/secrets/optune_newrelic_apm_api_key", "r") as auth_file:
+    newrelic_api_key = auth_file.read().strip()
+
+url = f"https://api.newrelic.com/v2/applications/{newrelic_app_id}/instances.json"
+print(newrelic_app_id,file=sys.stderr)
+print(config['newrelic_api_key'],file=sys.stderr)
 headers = {
-    "X-Api-Key": config['newrelic_api_key']
+    "X-Api-Key": newrelic_api_key
 }
 
 result = requests.post(url,headers=headers).json()
@@ -46,4 +54,4 @@ for item in result['application_instances']:
     else:
         monitoring['ref_instance_ids'].append(item['host'])
  
-print(json.dumps(monitoring))
+print(json.dumps(monitoring), file=sys.stdout)

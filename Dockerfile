@@ -13,9 +13,8 @@ ADD https://raw.githubusercontent.com/opsani/servo/master/servo \
     https://raw.githubusercontent.com/opsani/servo/master/measure.py \
     https://raw.githubusercontent.com/opsani/servo-vegeta/master/measure \
     https://raw.githubusercontent.com/opsani/servo-harness-newrelic/master/get-newrelic-instance-ids \
-    ./adjust \
     /servo/
-RUN chmod a+x /servo/adjust /servo/measure /usr/local/bin/vegeta /usr/local/bin/get-newrelic-instance-ids
+RUN chmod a+x /servo/adjust /servo/measure /servo/get-newrelic-instance-ids
 RUN chmod a+rw /servo/measure.py /servo/adjust.py
 ENV PYTHONUNBUFFERED=1
 ENTRYPOINT [ "python3", "servo", "--verbose" ]

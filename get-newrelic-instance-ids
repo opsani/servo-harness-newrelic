@@ -9,7 +9,7 @@ import sys
 with open("config.yaml", "r") as ymlfile:
     harness_config = yaml.load(ymlfile, Loader=yaml.FullLoader)
 
-config = harness_config["harness"]
+config = harness_config["canary"]
 
 url = "https://api.opsani.com/accounts/{}/applications/{}/config/".format(
     config["opsani_account"], config["opsani_app_name"]

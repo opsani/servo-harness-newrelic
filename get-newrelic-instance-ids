@@ -11,7 +11,7 @@ with open("config.yaml", "r") as ymlfile:
 
 config = harness_config["canary"]
 
-url = "https://api.opsani.com/accounts/{}/applications/{}/assets/opsani.com/userdata/".format(
+url = "https://api.opsani.com/accounts/{}/applications/{}/assets/opsani.com/userdata".format(
     config["opsani_account"], config["opsani_app_name"]
 )
 

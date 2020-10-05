@@ -11,7 +11,7 @@ with open("config.yaml", "r") as ymlfile:
 
 config = harness_config["canary"]
 
-url = "https://api.opsani.com/accounts/{}/applications/{}/config/".format(
+url = "https://api.opsani.com/accounts/{}/applications/{}/assets/opsani.com/userdata/".format(
     config["opsani_account"], config["opsani_app_name"]
 )
 
@@ -23,7 +23,7 @@ headers = {
 }
 response = requests.get(url, headers=headers)
 opsani_config = response.json()
-canary = opsani_config.get('adjustment', {}).get('control', {}).get('userdata', {}).get('canary')
+canary = opsani_config.get('data', {}).get('canary')
 canary_ip = canary.get('ip')
 canary_ip = re.sub(r"\.", "-", canary_ip)
 canary_hostname = f"ip-{canary_ip}.ec2.internal"

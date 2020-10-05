@@ -23,7 +23,7 @@ headers = {
 }
 response = requests.get(url, headers=headers)
 opsani_config = response.json()
-canary = opsani_config.get('data', {}).get('canary')
+canary = opsani_config.get('data').get('canary')
 canary_ip = canary.get('ip')
 canary_ip = re.sub(r"\.", "-", canary_ip)
 canary_hostname = f"ip-{canary_ip}.ec2.internal"

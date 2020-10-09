@@ -11,19 +11,19 @@ with open("config.yaml", "r") as ymlfile:
 
 config = harness_config["canary"]
 
-url = "https://api.opsani.com/accounts/{}/applications/{}/assets/opsani.com/userdata".format(
+url = "https://api.opsani.com/accounts/{}/applications/{}/assets/opsani.com/canary".format(
     config["opsani_account"], config["opsani_app_name"]
 )
 
 with open("/etc/opsani-auth/token", "r") as auth_file:
     opsani_token = auth_file.read().strip()
 headers = {
-    "Content-type": "application/merge-patch+json",
+    "Content-type": "application/json",
     "Authorization": "Bearer {}".format(opsani_token),
 }
 response = requests.get(url, headers=headers)
 opsani_config = response.json()
-canary = opsani_config.get('data').get('canary')
+canary = opsani_config.get('data')
 canary_ip = canary.get('ip')
 canary_ip = re.sub(r"\.", "-", canary_ip)
 # TODO - make expected newrelic hostname support more dynamic

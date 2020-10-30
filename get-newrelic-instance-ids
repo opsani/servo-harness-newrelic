@@ -27,8 +27,9 @@ canary = opsani_config.get('data')
 canary_ip = canary.get('ip')
 canary_ip = re.sub(r"\.", "-", canary_ip)
 # TODO - make expected newrelic hostname support more dynamic
-canary_hostname = f"ip-{canary_ip}.us-west-2.compute.internal"
-# A # canary_hostname = f"ip-{canary_ip}.ec2.internal"
+#canary_hostname = f"ip-{canary_ip}.us-west-2.compute.internal"
+# Customer specific
+canary_hostname = f"ip-{canary_ip}.ec2.internal"
 
 if not response.ok:
     raise('Unable to query OCO config. Status code {}. Data {}'.format(response.status_code, response.text))

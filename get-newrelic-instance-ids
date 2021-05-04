@@ -27,7 +27,7 @@ canary = opsani_config.get('data')
 canary_ip = canary.get('ip')
 canary_ip = re.sub(r"\.", "-", canary_ip)
 # TODO - make expected newrelic hostname support more dynamic
-#canary_hostname = f"ip-{canary_ip}.us-west-2.compute.internal"
+# canary_hostname = f"ip-{canary_ip}.us-west-2.compute.internal"
 # Customer specific
 canary_hostname = f"ip-{canary_ip}.ec2.internal"
 

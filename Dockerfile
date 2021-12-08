@@ -1,8 +1,8 @@
-FROM python:3.6-slim
+FROM python:3.9-slim
 WORKDIR /servo
 # Install dependencies
 RUN apt update && apt -y install curl jq
-RUN pip3 install requests PyYAML python-dateutil pydantic
+RUN pip3 install requests PyYAML python-dateutil pydantic nrql-simple
 
 # add agg driver
 RUN mkdir -p adjust.d

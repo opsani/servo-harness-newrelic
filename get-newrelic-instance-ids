@@ -5,6 +5,7 @@ import json
 import yaml
 import re
 import sys
+from nrql.api import NRQL
 
 with open("config.yaml", "r") as ymlfile:
     harness_config = yaml.load(ymlfile, Loader=yaml.FullLoader)
@@ -12,24 +13,37 @@ with open("config.yaml", "r") as ymlfile:
 config = harness_config["canary"]
 canary_hostname = config["opsani_app_name"]
 
+with open("/run/secrets/optune_newrelic_account_id", "r") as auth_file:
+    newrelic_account_id = auth_file.read().strip()
+
 with open("/run/secrets/optune_newrelic_apm_app_id", "r") as auth_file:
     newrelic_app_id = auth_file.read().strip()
 
 with open("/run/secrets/optune_newrelic_apm_api_key", "r") as auth_file:
     newrelic_api_key = auth_file.read().strip()
 
-url = f"https://api.newrelic.com/v2/applications/{newrelic_app_id}/instances.json"
-headers = {
-    "X-Api-Key": newrelic_api_key
-}
+with open("/run/secrets/optune_newrelic_insights_query_key", "r") as auth_file:
+    newrelic_insights_query_key = auth_file.read().strip()
 
-result = requests.post(url,headers=headers).json()
+nrql = NRQL()
+nrql.api_key = newrelic_insights_query_key
+nrql.account_id = newrelic_account_id
+
+def _get_canary(newrelic_app_id):
+    queryInsights = "SELECT uniques(host) FROM Transaction WHERE appId = {} AND host.displayName = 'OPSANI_CANARY' SINCE 5 minutes ago".format(newrelic_app_id)
+    query_results = nrql.query(queryInsights)
+    return query_results['results'][0]['members']
+
+def _get_mainline(newrelic_app_id):
+    # Note that host.displayName = 'CANARY' here is NOT referring to the Opsani Canary, but rather the Harness Canary
+    queryInsights = "SELECT uniques(host) FROM Transaction WHERE appId = {} AND (host.displayName IS NULL OR host.displayName = 'CANARY') SINCE 5 minutes ago".format(newrelic_app_id)
+    query_results = nrql.query(queryInsights)
+    return query_results['results'][0]['members']
 
 monitoring = {'instance_ids': [], 'ref_instance_ids': []}
-for item in result['application_instances']:
-    if canary_hostname in item['host']:
-        monitoring['instance_ids'].append(item['host'])
-    else:
-        monitoring['ref_instance_ids'].append(item['host'])
- 
+for item in _get_canary(newrelic_app_id):
+    monitoring['instance_ids'].append(item)
+for item in _get_mainline(newrelic_app_id):
+    monitoring['ref_instance_ids'].append(item) 
+
 print(json.dumps(monitoring), file=sys.stdout)

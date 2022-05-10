@@ -1,4 +1,4 @@
-FROM python:3.6-slim
+FROM python:3.10
 WORKDIR /servo
 # Install dependencies
 RUN apt update && apt -y install curl jq
@@ -11,8 +11,8 @@ ADD https://raw.githubusercontent.com/opsani/servo-agg/master/adjust \
     /servo/
 
 ADD https://raw.githubusercontent.com/opsani/servo/master/adjust.py /servo/
-ADD https://raw.githubusercontent.com/opsani/servo-harness/master/adjust /servo/adjust.d/canary
-ADD https://raw.githubusercontent.com/opsani/servo-harness/master/adjust /servo/adjust.d/mainline
+ADD https://raw.githubusercontent.com/opsani/servo-harness/feat/accept-harness-inputs-as-strings/adjust /servo/adjust.d/canary
+ADD https://raw.githubusercontent.com/opsani/servo-harness/feat/accept-harness-inputs-as-strings/adjust /servo/adjust.d/mainline
 
 ADD https://raw.githubusercontent.com/opsani/servo/master/servo \
     https://raw.githubusercontent.com/opsani/servo/master/measure.py \

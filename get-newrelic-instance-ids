@@ -10,7 +10,7 @@ from nrql.api import NRQL
 with open("config.yaml", "r") as ymlfile:
     harness_config = yaml.load(ymlfile, Loader=yaml.FullLoader)
 
-config = harness_config["canary"]
+config = harness_config["tuning"]
 canary_hostname = config["opsani_app_name"]
 
 with open("/run/secrets/optune_newrelic_account_id", "r") as auth_file:

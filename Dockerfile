@@ -11,8 +11,8 @@ ADD https://raw.githubusercontent.com/opsani/servo-agg/master/adjust \
     /servo/
 
 ADD https://raw.githubusercontent.com/opsani/servo/master/adjust.py /servo/
-ADD https://raw.githubusercontent.com/opsani/servo-harness/master/adjust /servo/adjust.d/canary
-ADD https://raw.githubusercontent.com/opsani/servo-harness/master/adjust /servo/adjust.d/mainline
+ADD https://raw.githubusercontent.com/opsani/servo-harness/modernization-automation/adjust /servo/adjust.d/tuning
+ADD https://raw.githubusercontent.com/opsani/servo-harness/modernization-automation/adjust /servo/adjust.d/main
 
 ADD https://raw.githubusercontent.com/opsani/servo/master/servo \
     https://raw.githubusercontent.com/opsani/servo/master/measure.py \
@@ -25,8 +25,8 @@ ADD https://raw.githubusercontent.com/opsani/servo/master/servo \
 RUN chmod a+rwx /servo/get-newrelic-instance-ids /servo/adjust.py
 # RUN chmod a+rwx /servo/allow-adjust-query.sh
 RUN chmod a+rwx /servo/adjust /servo/measure /servo/servo
-RUN chmod a+rx /servo/adjust.d/canary
-RUN chmod a+rx /servo/adjust.d/mainline
+RUN chmod a+rx /servo/adjust.d/tuning
+RUN chmod a+rx /servo/adjust.d/main
 RUN chmod a+rw /servo/measure.py /servo/adjust.py
 ENV PYTHONUNBUFFERED=1
 ENV OPTUNE_USE_DRIVER_NAME=1

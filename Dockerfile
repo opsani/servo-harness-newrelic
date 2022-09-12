@@ -1,4 +1,5 @@
 FROM python:3.10-slim
+LABEL version="1.3.1-rc-mf" vendor="AppDynamics, Inc." vendor="Opsani" servo-harness="modernization-automation+detect-freeze"
 WORKDIR /servo
 # Install dependencies
 RUN apt update && apt -y install curl jq

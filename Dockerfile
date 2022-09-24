@@ -2,7 +2,7 @@ FROM python:3-slim
 LABEL version="1.3.3-rc-6" vendor="AppDynamics, Inc." vendor="Opsani" servo-harness="modernization-automation+detect-freeze"
 WORKDIR /servo
 # Install dependencies
-RUN apt update && apt -y install curl jq
+RUN apt update && apt -y install curl jq && rm -rf /var/lib/apt/lists/*
 RUN pip3 install requests PyYAML python-dateutil pydantic nrql-simple
 
 # add agg driver

@@ -1,8 +1,8 @@
 FROM python:3.10-slim
-LABEL version="1.3.2-rc-mf" vendor="AppDynamics, Inc." vendor="Opsani" servo-harness="modernization-automation+detect-freeze"
+LABEL version="1.3.3-rc" vendor="AppDynamics, Inc." vendor="Opsani" servo-harness="detect-blackout"
 WORKDIR /servo
 # Install dependencies
-RUN apt update && apt -y install curl jq
+RUN apt update && apt -y install curl jq && rm -rf /var/lib/apt/lists/*
 RUN pip3 install requests PyYAML python-dateutil pydantic nrql-simple
 
 # add agg driver

@@ -1,5 +1,5 @@
-FROM python:3.10-slim
-LABEL version="1.3.2-rc-mf" vendor="AppDynamics, Inc." vendor="Opsani" servo-harness="modernization-automation+detect-freeze"
+FROM python:3-slim
+LABEL version="1.3.3-rc-6" vendor="AppDynamics, Inc." vendor="Opsani" servo-harness="modernization-automation+detect-freeze"
 WORKDIR /servo
 # Install dependencies
 RUN apt update && apt -y install curl jq
@@ -21,6 +21,7 @@ ADD https://raw.githubusercontent.com/opsani/servo/master/servo \
     ./get-newrelic-instance-ids \
     /servo/
 
+ADD ./subproc-test.py /servo/
 RUN chmod a+rwx /servo/get-newrelic-instance-ids /servo/adjust.py
 RUN chmod a+rwx /servo/adjust /servo/measure /servo/servo
 RUN chmod a+rx /servo/adjust.d/tuning

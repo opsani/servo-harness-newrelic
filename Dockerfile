@@ -1,5 +1,5 @@
 FROM python:3-slim
-LABEL version="1.3.3-rc-6" vendor="AppDynamics, Inc." vendor="Opsani" servo-harness="modernization-automation+detect-freeze"
+LABEL version="1.3" vendor="AppDynamics, Inc." vendor="Opsani" servo-harness="modernization-automation+detect-freeze"
 WORKDIR /servo
 # Install dependencies
 RUN apt update && apt -y install curl jq && rm -rf /var/lib/apt/lists/*
@@ -12,12 +12,12 @@ ADD https://raw.githubusercontent.com/opsani/servo-agg/master/adjust \
     /servo/
 
 ADD https://raw.githubusercontent.com/opsani/servo/master/adjust.py /servo/
-ADD https://raw.githubusercontent.com/opsani/servo-harness/feature/validate-blank-resources/adjust /servo/adjust.d/tuning
-ADD https://raw.githubusercontent.com/opsani/servo-harness/feature/validate-blank-resources/adjust /servo/adjust.d/main
+ADD https://raw.githubusercontent.com/opsani/servo-harness/adjust /servo/adjust.d/tuning
+ADD https://raw.githubusercontent.com/opsani/servo-harness/adjust /servo/adjust.d/main
 
 ADD https://raw.githubusercontent.com/opsani/servo/master/servo \
     https://raw.githubusercontent.com/opsani/servo/master/measure.py \
-    https://raw.githubusercontent.com/opsani/servo-newrelic/monitoring-instance-ids/measure \
+    https://raw.githubusercontent.com/opsani/servo-newrelic/measure \
     ./get-newrelic-instance-ids \
     /servo/
 

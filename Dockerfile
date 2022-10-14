@@ -22,7 +22,6 @@ ADD https://raw.githubusercontent.com/opsani/servo/master/servo \
     ./get-newrelic-instance-ids \
     /servo/
 
-ADD ./subproc-test.py /servo/
 RUN chmod a+rwx /servo/get-newrelic-instance-ids /servo/adjust.py
 RUN chmod a+rwx /servo/adjust /servo/measure /servo/servo
 RUN chmod a+rx /servo/adjust.d/tuning

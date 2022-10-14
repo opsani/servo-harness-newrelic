@@ -1,5 +1,5 @@
 FROM python:3-slim
-LABEL version="1.3" vendor="AppDynamics, Inc." vendor="Opsani" servo-harness="master" servo-newrelic="master"
+LABEL version="v1.3.3" vendor="AppDynamics, Inc." vendor="Opsani" servo-harness-newrelic="v1.3.3" servo-harness="v1.3.3" servo-newrelic="v1.3.3"
 WORKDIR /servo
 # Install dependencies
 RUN apt update && apt -y install curl jq && rm -rf /var/lib/apt/lists/*

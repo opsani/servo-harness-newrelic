@@ -12,8 +12,8 @@ ADD https://raw.githubusercontent.com/opsani/servo-agg/master/adjust \
     /servo/
 
 ADD https://raw.githubusercontent.com/opsani/servo/master/adjust.py /servo/
-ADD https://raw.githubusercontent.com/opsani/servo-harness/master/adjust /servo/adjust.d/tuning
-ADD https://raw.githubusercontent.com/opsani/servo-harness/master/adjust /servo/adjust.d/main
+ADD https://raw.githubusercontent.com/opsani/servo-harness/1.2.x-lkwg/adjust /servo/adjust.d/tuning
+ADD https://raw.githubusercontent.com/opsani/servo-harness/1.2.x-lkwg/adjust /servo/adjust.d/main
 
 
 ADD https://raw.githubusercontent.com/opsani/servo/master/servo \
